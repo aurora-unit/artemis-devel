@@ -1,0 +1,62 @@
+version: "3.7"
+
+
+services:
+
+  traefik:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=8080"
+      - "traefik.docker.network=devel"
+    image: traefik:1.7-alpine
+    command: --docker --api
+    restart: always
+    networks:
+      - devel
+    volumes:
+      - {source: "/var/run/docker.sock", target: "/var/run/docker.sock", type: "bind", volume: { nocopy: true }, read_only: false}
+    ports:
+      - {target: 80, published: 80, mode: "host", protocol: "tcp"}
+
+
+  postgres:
+    labels:
+      - "traefik.enable=false"
+    image: postgres:11.2-alpine
+    restart: always
+    networks:
+      - devel
+    expose:
+      - "5432"
+    env_file:
+      - "./development.env"
+    volumes:
+      - {source: "./volumes/postgres_data", target: "/var/lib/postgresql/data", type: "bind", volume: { nocopy: true }, read_only: false}
+    ports:
+      - {target: 5432, published: 5432, mode: "host", protocol: "tcp"}
+
+
+  minio:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.port=9000"
+      - "traefik.docker.network=devel"
+    image: minio/minio:RELEASE.2019-02-14T00-21-45Z
+    command: server /data
+    restart: always
+    networks:
+      - devel
+    expose:
+      - "9000"
+    env_file:
+      - "./development.env"
+    volumes:
+      - {source: "./volumes/minio_data", target: "/data", type: "bind", volume: { nocopy: true }, read_only: false}
+    ports:
+      - {target: 9000, published: 9000, mode: "host", protocol: "tcp"}
+
+
+networks:
+    devel:
+      external:
+        name: devel
