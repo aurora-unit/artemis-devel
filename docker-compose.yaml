@@ -6,7 +6,7 @@ services:
   traefik:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.frontend.rule=Host:traefik.artemis"
+      - "traefik.http.frontend.rule=Host:traefik.ops.localhost"
       - "traefik.http.port=8080"
       - "traefik.http.protocol=http"
       - "traefik.docker.network=devel"
@@ -41,7 +41,7 @@ services:
   minio:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.frontend.rule=Host:minio.artemis"
+      - "traefik.http.frontend.rule=Host:minio.ops.localhost"
       - "traefik.http.port=9000"
       - "traefik.http.protocol=http"
       - "traefik.docker.network=devel"
