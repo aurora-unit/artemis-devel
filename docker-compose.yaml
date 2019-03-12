@@ -7,7 +7,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.frontend.rule=Host:traefik.artemis"
-      - "traefik.http.port=8000"
+      - "traefik.http.port=8080"
       - "traefik.http.protocol=http"
       - "traefik.docker.network=devel"
     image: traefik:1.7-alpine
