@@ -6,7 +6,9 @@ services:
   traefik:
     labels:
       - "traefik.enable=true"
-      - "traefik.port=8080"
+      - "traefik.http.frontend.rule=Host:traefik.artemis"
+      - "traefik.http.port=8000"
+      - "traefik.http.protocol=http"
       - "traefik.docker.network=devel"
     image: traefik:1.7-alpine
     command: --docker --api
@@ -39,7 +41,9 @@ services:
   minio:
     labels:
       - "traefik.enable=true"
-      - "traefik.port=9000"
+      - "traefik.http.frontend.rule=Host:minio.artemis"
+      - "traefik.http.port=9000"
+      - "traefik.http.protocol=http"
       - "traefik.docker.network=devel"
     image: minio/minio:RELEASE.2019-02-14T00-21-45Z
     command: server /data
