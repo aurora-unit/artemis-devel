@@ -11,7 +11,12 @@ services:
       - "traefik.http.protocol=http"
       - "traefik.docker.network=devel"
     image: traefik:1.7-alpine
-    command: --docker --api
+    command:
+      - --docker
+      - --api
+      - --entryPoints=Name:http Address::80
+      - --entryPoints=Name:grpc Address::51000
+      - --docker.domain=localhost
     restart: always
     networks:
       - devel
@@ -19,6 +24,7 @@ services:
       - {source: "/var/run/docker.sock", target: "/var/run/docker.sock", type: "bind", volume: { nocopy: true }, read_only: false}
     ports:
       - {target: 80, published: 80, mode: "host", protocol: "tcp"}
+      - {target: 51000, published: 51000, mode: "host", protocol: "tcp"}
 
 
   postgres:
