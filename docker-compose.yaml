@@ -6,7 +6,6 @@ services:
   traefik:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.frontend.rule=Host:traefik.ops.localhost"
       - "traefik.http.port=8080"
       - "traefik.http.protocol=http"
       - "traefik.docker.network=devel"
@@ -23,6 +22,7 @@ services:
     volumes:
       - {source: "/var/run/docker.sock", target: "/var/run/docker.sock", type: "bind", volume: { nocopy: true }, read_only: false}
     ports:
+      - {target: 8080, published: 8080, mode: "host", protocol: "tcp"}
       - {target: 80, published: 80, mode: "host", protocol: "tcp"}
       - {target: 51000, published: 51000, mode: "host", protocol: "tcp"}
 
@@ -47,7 +47,6 @@ services:
   minio:
     labels:
       - "traefik.enable=true"
-      - "traefik.http.frontend.rule=Host:minio.ops.localhost"
       - "traefik.http.port=9000"
       - "traefik.http.protocol=http"
       - "traefik.docker.network=devel"
